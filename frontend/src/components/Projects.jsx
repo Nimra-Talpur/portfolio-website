@@ -1,5 +1,88 @@
 import { useEffect, useState, useRef } from 'react'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+export const ALL_PROJECTS = [
+  {
+    id: '1',
+    title: 'Portfolio Website',
+    description: 'A full stack personal portfolio built with the MERN stack. Features a contact form, animated UI, scroll-based interactions, and a clean dark theme.',
+    techStack: ['React', 'Node.js', 'Express', 'MongoDB'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '2',
+    title: 'Eldora Skin',
+    description: 'A luxury skincare e-commerce platform with product catalog, user authentication, cart system, and an AI-powered skin analyzer using OpenCV and DeepFace.',
+    techStack: ['Python', 'Flask', 'PostgreSQL', 'OpenCV'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '3',
+    title: 'Task Manager App',
+    description: 'A productivity app with drag-and-drop task boards, priority labels, due dates, and real-time status updates. Built with a RESTful backend.',
+    techStack: ['React', 'Node.js', 'MongoDB', 'CSS3'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '4',
+    title: 'Weather Dashboard',
+    description: 'A real-time weather app with location search, 7-day forecast, animated weather icons, and dynamic backgrounds based on conditions.',
+    techStack: ['React', 'OpenWeather API', 'CSS3'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '5',
+    title: 'E-Commerce Store',
+    description: 'A full-featured online store with product filtering, cart management, checkout flow, and admin dashboard for inventory management.',
+    techStack: ['React', 'Node.js', 'Express', 'MongoDB'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '6',
+    title: 'Blog Platform',
+    description: 'A markdown-based blogging platform with rich text editor, categories, tags, comment system and user authentication.',
+    techStack: ['React', 'Node.js', 'MongoDB', 'Markdown'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '7',
+    title: 'Chat Application',
+    description: 'A real-time messaging app with private rooms, online status indicators, typing indicators, and emoji support using Socket.io.',
+    techStack: ['React', 'Socket.io', 'Node.js', 'MongoDB'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '8',
+    title: 'Recipe Finder',
+    description: 'A recipe discovery app with ingredient-based search, dietary filters, nutrition info, save favorites, and step-by-step cooking mode.',
+    techStack: ['React', 'Spoonacular API', 'CSS3'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '9',
+    title: 'Student Grade Tracker',
+    description: 'A web app for students to log grades, calculate GPA, track progress over semesters, and generate performance reports.',
+    techStack: ['React', 'Flask', 'PostgreSQL', 'Chart.js'],
+    githubLink: '',
+    liveLink: ''
+  },
+  {
+    id: '10',
+    title: 'Expense Tracker',
+    description: 'A personal finance tracker with income/expense logging, category breakdowns, monthly summaries, and visual charts.',
+    techStack: ['React', 'Node.js', 'MongoDB', 'Recharts'],
+    githubLink: '',
+    liveLink: ''
+  }
+]
 
 function ProjectRow({ project, index }) {
   const ref = useRef(null)
@@ -10,11 +93,11 @@ function ProjectRow({ project, index }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setEntered(true), index * 150)
+          setTimeout(() => setEntered(true), index * 120)
           observer.disconnect()
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     )
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
@@ -22,31 +105,24 @@ function ProjectRow({ project, index }) {
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
-
-      {/* Animated top border line */}
       <div style={{
         height: '1px',
         backgroundColor: 'var(--accent)',
         width: entered ? '100%' : '0%',
-        transition: `width 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.15}s`,
-        marginBottom: '0'
+        transition: `width 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.12}s`,
       }} />
 
-      {/* Row content */}
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
           padding: '2.5rem 0',
           backgroundColor: hovered ? 'rgba(255,107,43,0.04)' : 'transparent',
-          transition: 'background-color 0.3s ease',
           opacity: entered ? 1 : 0,
-          transform: entered
-            ? 'translateX(0) translateY(0)'
-            : 'translateX(-60px) translateY(10px)',
+          transform: entered ? 'translateX(0)' : 'translateX(-50px)',
           transition: `
-            opacity 0.7s ease ${index * 0.15}s,
-            transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.15}s,
+            opacity 0.65s ease ${index * 0.12}s,
+            transform 0.65s cubic-bezier(0.16,1,0.3,1) ${index * 0.12}s,
             background-color 0.3s ease
           `
         }}
@@ -60,13 +136,15 @@ function ProjectRow({ project, index }) {
 
           {/* LEFT */}
           <div>
-            {/* Big index number */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{
+              display: 'flex', alignItems: 'baseline',
+              gap: '0.75rem', marginBottom: '0.75rem'
+            }}>
               <span style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3rem, 6vw, 5rem)',
+                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
                 fontWeight: 600,
-                color: hovered ? 'var(--accent)' : 'rgba(255,255,255,0.07)',
+                color: hovered ? 'var(--accent)' : 'rgba(255,255,255,0.06)',
                 lineHeight: 1,
                 transition: 'color 0.35s ease',
                 userSelect: 'none'
@@ -76,15 +154,18 @@ function ProjectRow({ project, index }) {
               <span style={{
                 fontSize: '0.68rem', letterSpacing: '0.18em',
                 textTransform: 'uppercase', color: 'var(--accent)',
-                fontFamily: 'var(--font-body)', fontWeight: 500,
+                fontFamily: 'var(--font-body)', fontWeight: 500
               }}>Project</span>
             </div>
 
-            {/* Title */}
-            <div style={{ position: 'relative', display: 'inline-block', marginBottom: '1.25rem' }}>
+            <div style={{
+              position: 'relative',
+              display: 'inline-block',
+              marginBottom: '1.25rem'
+            }}>
               <h2 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.7rem, 2.8vw, 2.4rem)',
+                fontSize: 'clamp(1.6rem, 2.6vw, 2.2rem)',
                 fontWeight: 600,
                 color: 'var(--text)',
                 letterSpacing: '-0.01em',
@@ -93,7 +174,6 @@ function ProjectRow({ project, index }) {
               }}>
                 {project.title}
               </h2>
-              {/* Underline wipe */}
               <div style={{
                 position: 'absolute',
                 bottom: '-3px', left: 0,
@@ -104,7 +184,6 @@ function ProjectRow({ project, index }) {
               }} />
             </div>
 
-            {/* Pills */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
               {project.techStack.map((tech, j) => (
                 <span key={j} style={{
@@ -137,7 +216,8 @@ function ProjectRow({ project, index }) {
                     border: '1px solid var(--border)',
                     borderRadius: '30px', fontSize: '0.82rem',
                     color: 'var(--text)', fontFamily: 'var(--font-body)',
-                    transition: 'border-color 0.2s, color 0.2s'
+                    transition: 'border-color 0.2s, color 0.2s',
+                    textDecoration: 'none'
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.borderColor = 'var(--accent)'
@@ -158,7 +238,8 @@ function ProjectRow({ project, index }) {
                     borderRadius: '30px', fontSize: '0.82rem',
                     color: '#fff', fontFamily: 'var(--font-body)',
                     boxShadow: '0 0 16px rgba(255,107,43,0.25)',
-                    transition: 'opacity 0.2s, transform 0.2s'
+                    transition: 'opacity 0.2s, transform 0.2s',
+                    textDecoration: 'none'
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.opacity = '0.85'
@@ -179,14 +260,11 @@ function ProjectRow({ project, index }) {
   )
 }
 
-export default function Projects() {
-  const [projects, setProjects] = useState([])
+export { ProjectRow }
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/api/projects')
-      .then(res => setProjects(res.data))
-      .catch(err => console.log('Error:', err))
-  }, [])
+export default function Projects() {
+  const navigate = useNavigate()
+  const preview = ALL_PROJECTS.slice(0, 3)
 
   return (
     <section id="work" style={{
@@ -202,7 +280,6 @@ export default function Projects() {
         position: 'relative',
         zIndex: 1
       }}>
-        {/* Heading */}
         <div style={{ marginBottom: '3rem' }}>
           <p style={{
             fontSize: '0.73rem', letterSpacing: '0.15em',
@@ -217,30 +294,48 @@ export default function Projects() {
           }}>Selected Projects</h2>
         </div>
 
-        {projects.length === 0 ? (
-          <div style={{
-            padding: '3rem 2rem',
-            border: '1px dashed rgba(255,107,43,0.3)',
-            borderRadius: '16px', textAlign: 'center'
-          }}>
-            <p style={{
+        <div>
+          {preview.map((p, i) => (
+            <ProjectRow key={p.id} project={p} index={i} />
+          ))}
+          <div style={{ height: '1px', backgroundColor: 'var(--border)' }} />
+        </div>
+
+        {/* See More button */}
+        <div style={{
+          display: 'flex', justifyContent: 'center',
+          marginTop: '3rem'
+        }}>
+          <button
+            onClick={() => navigate('/projects')}
+            style={{
+              padding: '0.9rem 2.5rem',
+              border: '1px solid var(--border)',
+              borderRadius: '30px',
+              backgroundColor: 'transparent',
+              color: 'var(--text)',
+              fontSize: '0.9rem',
               fontFamily: 'var(--font-display)',
-              fontSize: '1.2rem', color: 'var(--text)',
-              marginBottom: '0.4rem'
-            }}>No projects yet</p>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              Seed the database to see projects here.
-            </p>
-          </div>
-        ) : (
-          <div>
-            {projects.map((p, i) => (
-              <ProjectRow key={p._id} project={p} index={i} />
-            ))}
-            {/* Final bottom line */}
-            <div style={{ height: '1px', backgroundColor: 'var(--border)' }} />
-          </div>
-        )}
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.5rem',
+              transition: 'border-color 0.2s, color 0.2s, background 0.2s'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'var(--accent)'
+              e.currentTarget.style.color = 'var(--accent)'
+              e.currentTarget.style.background = 'rgba(255,107,43,0.05)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'var(--border)'
+              e.currentTarget.style.color = 'var(--text)'
+              e.currentTarget.style.background = 'transparent'
+            }}
+          >
+            See all projects
+            <span style={{ fontSize: '1rem' }}>→</span>
+          </button>
+        </div>
       </div>
 
       <style>{`
