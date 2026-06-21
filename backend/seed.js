@@ -7,15 +7,15 @@ const projects = [
     title: 'Portfolio Website',
     description: 'A full stack personal portfolio built with the MERN stack. Features a contact form, projects section, and a clean dark UI.',
     techStack: ['React', 'Node.js', 'Express', 'MongoDB'],
-    githubLink: 'https://github.com/yourusername/portfolio',
+    githubLink: '',
     liveLink: 'https://yourportfolio.vercel.app'
   },
   {
     title: 'Eldora Skin',
     description: 'A luxury skincare e-commerce platform with product catalog, user authentication, cart system, and an AI-powered skin analyzer using OpenCV.',
     techStack: ['Python', 'Flask', 'PostgreSQL', 'OpenCV'],
-    githubLink: 'https://github.com/yourusername/eldora-skin',
-    liveLink: ''
+    githubLink: '',
+    liveLink: 'https://eldoraskin.vercel.app'
   }
 ]
 
